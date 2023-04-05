@@ -1,0 +1,28 @@
+{% load active_link_tags %}
+{% load static %}
+
+<nav class="navbar navbar-right navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand {% active_link 'home' %}" href="{% url 'home' %}">
+        <img id='logo' src="{% static 'mimic/logo.png' %}"/>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link {% active_link 'integrins' %}" href="{% url 'integrins' %}">Integrins</a>
+            <a class="nav-item nav-link {% active_link 'pdbs' %}" href="{% url 'pdbs' %}">Structures</a>
+            <a class="nav-item nav-link {% active_link 'browser' %}" href="{% url 'browser' %}">Interactions</a>
+            <a class="nav-item nav-link {% active_link 'search' %}" href="{% url 'search' %}">Search</a>
+            <a class="nav-item nav-link {% active_link 'downloads' %}" href="{% url 'downloads' %}">Downloads</a>
+            <a class="nav-item nav-link {% active_link 'help' %}" href="{% url 'help' %}">Help</a>
+            <a class="nav-item nav-link {% active_link 'about' %}" href="{% url 'about' %}">About</a>
+            {#            <a class="nav-item nav-link {% active_link 'protein-interactors' %}" href="{% url 'protein-interactors' %}">Interactors</a>#}
+            {#            <a class="nav-item nav-link {% active_link 'drugs' %}" href="{% url 'drugs' %}">Drugs</a>#}
+            {#            <a class="nav-item nav-link {% active_link 'about' %}" href="{% url 'about' %}">About</a>#}
+        </div>
+    </div>
+</nav>

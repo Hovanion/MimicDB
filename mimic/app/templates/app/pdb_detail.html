@@ -1,0 +1,137 @@
+{% extends "mimic/base.html" %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-lg'>
+        <h1>PDB: <strong>{{ pdb.pdb }}</strong></h1>
+    </div>
+</div>
+<div class='row'>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>
+                Basic information
+            </div>
+            <div class='card-body'>
+                <ul>
+                    <li>
+                        <strong>PDB: </strong>
+                        <a target="_blank" href="{{ pdb.pdb_link }}">
+                            {{ pdb.pdb }}
+                        </a>
+                    </li>
+                    <li>
+                        <strong>Technique: </strong>
+                            {{ pdb.exp_tech }}
+                    </li>
+                    <li>
+                        <strong>Resolution: </strong>
+                            {{ pdb.resolution }}
+                    </li>
+                    <li>
+                        <strong>α subunit: </strong>
+                        {% if pdb.alpha %}
+                            <a href="{% url 'alpha' pdb.alpha.name %}">
+                                {{ pdb.alpha.display_name }}
+                            </a>
+                         {% else %}
+                            (none)
+                         {% endif %}
+                    </li>
+                    <li>
+                        <strong>β subunit: </strong>
+                        {% if pdb.beta %}
+                            <a href="{% url 'beta' pdb.beta.name %}">
+                                {{ pdb.beta.display_name }}
+                            </a>
+                         {% else %}
+                            (none)
+                         {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        &nbsp;
+        <div class='card'>
+            <div class='card-header'>
+                Interactors
+            </div>
+            <div class='card-body'>
+                <ul>
+                    <li>
+                        <strong>Protein interactors: </strong>
+                        <ul>
+                            {% if pdb.pdbtoprotein_set.all %}
+                                {% for pdb_to_protein in pdb.pdbtoprotein_set.all %}
+                                    <li>
+                                        {{ pdb_to_protein.protein.uniprot }}
+                                        (chain(s): {{ pdb_to_protein.chains }})
+                                        {{ pdb_to_protein.start}} - 
+                                        {{ pdb_to_protein.stop }}
+                                    </li>
+                                {% endfor %}
+                             {% else %}
+                                 <li>(none)</li>
+                             {% endif %}
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Other interactors: </strong>
+                        <ul>
+                            {% if pdb.other_interactors %}
+                                <li>
+                                    {{ pdb.other_interactors }}
+                                </li>
+                             {% else %}
+                                 <li>(none)</li>
+                             {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>
+                Structural information
+            </div>
+            <div class='card-body'>
+                <div class='mx-auto d-block'>
+                  {{ pdb.generate_pdb_diagram | safe }}
+                <p>
+                    The figure shows in color the domains and regions of the
+                    α (blue) and β (red) subunits that have structural
+                    information in this PDB entry. Hovering over domains or
+                    regions displays the corresponding domain name.
+                </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+});
+$('[data-toggle="popover"]').popover({ trigger: "manual" , html: true, animation:false})
+    .on("mouseenter", function () {
+        var _this = this;
+        $(this).popover("show");
+        $(".popover").on("mouseleave", function () {
+            $(_this).popover('hide');
+        });
+    }).on("mouseleave", function () {
+        var _this = this;
+        setTimeout(function () {
+            if (!$(".popover:hover").length) {
+                $(_this).popover("hide");
+            }
+        }, 300);
+});
+</script>
+
+{% endblock content %}
+

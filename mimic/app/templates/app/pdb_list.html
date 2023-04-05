@@ -1,0 +1,100 @@
+{% extends "mimic/base.html" %}
+{% load django_tables2 %}
+{% load custom_tags_filters %}
+{% block content %}
+
+    <div class='row'>
+        <div class='col-lg'>
+            <h1>Structures</h1>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='col-lg'>
+            <p>
+                The table contains all structures from the PDB database that
+                contain structural information about human integrins. As dimeric
+                integrins are large, transmembrane receptors, it is not feasible to
+                solve complete structures. As a consequence, each listed PDB entry
+                contains a fragment of the dimeric receptor or a monomeric subunit.
+            </p>
+            {#        <p>#}
+            {#            The table is sortable by clicking on column headers.#}
+            {#        </p>#}
+            {#        {% render_table table %}#}
+
+            <div class="table-responsive p-12">
+
+                <table id="browsertable" class="table table-hover table-sm">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th class="text-center">PDB ID</th>
+                        <th class="text-center">Experimental technique</th>
+                        <th class="text-center">Resolution</th>
+                        <th class="text-center">α subunit present</th>
+                        <th class="text-center">β subunit present</th>
+                        <th class="text-center">Protein interactors present</th>
+                        <th class="text-center">Peptide/antibody/drugs present</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for record in records %}
+                        <tr>
+                            <td class="text-center"><a href="{% url 'pdb' pdb=record.pdb %}"> {{ record.pdb }} </a></td>
+                            <td class="text-center">{{ record.exp_tech }}</td>
+                            <td class="text-center">
+                                {% if record.resolution %}
+                                    {{ record.resolution }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if record.alpha_subunit %}
+                                    <a href="{% url 'alpha' record.alpha_subunit.name %}">
+                                        {{ record.alpha_subunit }} </a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if record.beta_subunit %}
+                                    <a href="{% url 'alpha' record.beta_subunit.name %}">
+                                        {{ record.beta_subunit }} </a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if record.interaction != "-" %}
+                                    {% spaceless %}
+                                        {% for record in record.interaction %}
+                                            <a href="{% url 'interactions' protein=record %}">{{ record }}</a>
+                                            {% if not forloop.last %},{% endif %}
+                                        {% endfor %}
+                                    {% endspaceless %}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+
+                            <td class="text-center">
+                                {% if record.other_interactors %}
+                                    <i class="fa-solid fa-check"></i>
+                                {% else %}
+                                    -
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+{% endblock content %}

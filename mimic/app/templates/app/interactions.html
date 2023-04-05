@@ -1,0 +1,116 @@
+{% extends "mimic/base.html" %}
+{% load django_tables2 %}
+{% load custom_tags_filters %}
+{% block content %}
+{% load static %}
+
+<div class='row'>
+    <div class='col-lg'>
+        <h1 id="pagetitle">
+            {% if peptide %} {{ entry.peptide | synthetic_peptide_capital }}
+            {% else %}
+                {{ information.name }} (<i>{{ information.organism_scientific }}</i>, <a
+                    href="{{ entry.uniprot_link }}" target="_blank"
+            >{{ entry }}</a> )
+            {% endif %}
+        </h1>
+    </div>
+</div>
+<div class='row'>
+    <div class='col-lg'>
+        <div class="row">
+            <div class="col-6">
+                {#                <div id="sampletext" class="p-3 mb-2 text-black">#}
+                {#                    This protein is a subunit of a heterooligomer/homooligomer (name, UniProt ID)#}
+                {#                </div>#}
+                <div id="sampletext1" class="p-3 mb-2 text-black">
+                    {% if peptide %}
+                    Not applicable.
+                    {% else %}
+                    {% autoescape off %}
+                    {{ information.function | function_pubmed_link }}
+                    {% endautoescape %}
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="card mb-8">
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+
+                        <div id="psv"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+
+            <table id="entrytable" class="table table-hover table-sm" border-spacing="0">
+                <thead style="background-color: #ccdfe5;">
+                <tr>
+                    <th class="text-center">Interaction type <i class="icon-info-sign" data-toggle="tooltip"
+                                                                title="first tooltip" id="example"></i></th>
+                    <th class="text-center">Type of interaction</th>
+                    <th class="text-center">Pubmed ID</th>
+                    <th class="text-center">Experimental method</th>
+                    <th class="text-center">Competitor (if applicable)</th>
+                    <th class="text-center">Interaction strength</th>
+                    <th class="text-center">Construct boundaries</th>
+                    <th class="text-center">Interaction region boundaries</th>
+                    <th class="text-center">ELM</th>
+                    <th class="text-center">Notes</th>
+                </tr>
+                </thead>
+
+                {% for record in records %}
+                <tr>
+                    {% if record.type_of_evidence == "-" %}
+                    <td id="red" class="text-center" style="color: red" ;>
+                        {% autoescape off %} {{ record.target_integrin | integrin_name }} {% endautoescape %}
+                        ({{ record.type_of_evidence }})
+                    </td>
+                    {% else %}
+                    <td id="green" class="text-center" style="color: darkgreen ">
+                        {% autoescape off %} {{ record.target_integrin | integrin_name }} {% endautoescape %}
+                        ({{ record.type_of_evidence }})
+                    </td>
+                    {% endif %}
+                    <td class="text-center"> {{ record.type_of_interaction }}</td>
+                    <td class="text-center">
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/{{ record.pubmed }}/" target="_blank"
+                           class="btn btn-rounded btn-info">PubMed</a>
+                    </td>
+                    <td class="text-center"> {{ record.experimental_method }}
+                        <a href="{{ record.eco_link }}" target="_blank"
+                           class="btn btn-rounded btn-info">{{ record.eco }}</a>
+                    </td>
+                    <td class="text-center"> {{ record.competitor }}</td>
+                    {% autoescape off %}
+                    <td class="text-center"> {{ record.interaction_strength |kd }}</td>
+                    {% endautoescape %}
+                    <td class="text-center"> {{ record.construct_boundaries }}</td>
+                    <!-- TODO excel format -->
+                    <td class="text-center"> {{ record.interacting_region_boundaries }}</td>
+                    <td class="text-center">
+                        {% if entry.motif != "-" %}
+                            <a href="{{ record.elm_link }}" target="_blank"
+                               class="btn btn-rounded btn-warning">ELM</a>
+                        {% else %} -{% endif %}
+                    </td>
+                    {% autoescape off %}
+                    <td class="text-center"> {{ record.notes |ionindex }}   </td>
+                    {% endautoescape %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+
+        </p>
+
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,175 @@
+{% extends "mimic/base.html" %}
+{% load django_tables2 %}
+{% load custom_tags_filters %}
+
+{% block content %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#browsertable").on('click', 'tr td', function () {
+            var href = $(this).find("a").attr("href");
+            if (href) {
+                window.location = href;
+            }
+        });
+    });
+</script>
+
+<div class='row'>
+    <div class='col-lg'>
+        <h1>Browser</h1>
+    </div>
+</div>
+<div class='row'>
+    <div class='col-lg'>
+        {% if page_obj.paginator.count > 20 %}
+            <ul class="pagination pull-left">
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span>
+                        </li>
+                    {% elif i > page_obj.number|add:'-5' and i < page_obj.number|add:'5' %}
+                        <li><a href="?{% url_replace request 'page' i %}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div class="table-responsive">
+
+            <table id="browsertable" class="table table-hover table-sm">
+                <thead>
+                <tr class="table-secondary">
+                    <th class="text-center">UniProt Accession</th>
+                    <th class="text-center">Protein/Peptide name</th>
+                    <th class="text-center">Source organism</th>
+                    <th class="text-center">Type of interaction</th>
+                    <th class="text-center">Experimental methods used</th>
+                    <th class="text-center">Integrins</th>
+                    <th class="text-center">Interaction strength available</th>
+                    <th class="text-center">Bound structure available</th>
+                    <th class="text-center">Cell based assay</th>
+                    <th class="text-center">Purified protein assay</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for record in records %}
+                <tr>
+                    <td class="text-center">
+                        {% if record.protein != "-" %}
+                            <a href="{% url 'interactions' protein=record.protein %}">{{ record.protein }}</a>
+                        {% else %}
+                            <a href="{% url 'interactions' protein=record.id %}">-</a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if record.protein != "-" %}
+                            <a href="{% url 'interactions' protein=record.protein %}">{{ record.name }}</a></td>
+                        {% else %}
+                            <a href="{% url 'interactions' protein=record.id %}">{{ record.peptide |synthetic_peptide_capital }}</a>
+                        {% endif %}
+                    <td class="text-center">
+                        {% if record.protein != "-" %}
+                            <a href="{% url 'interactions' protein=record.protein %}">{{ record.organism }}</a>
+                        {% else %}
+                            <a href="{% url 'interactions' protein=record.id %}">-</a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if record.protein != "-" %}
+                            <a href="{% url 'interactions' protein=record.protein %}">{{ record.type_of_interaction }}</a>
+                        {% else %}
+                            <a href="{% url 'interactions' protein=record.id %}">{{ record.type_of_interaction }}</a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if record.protein != "-" %}
+                            <a href="{% url 'interactions' protein=record.protein %}">{{ record.experimental_method }}</a>
+                        {% else %}
+                            <a href="{% url 'interactions' protein=record.id %}">{{ record.experimental_method }}</a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if record.protein != "-" %}
+                        <a href="{% url 'interactions' protein=record.protein %}">
+                            {% autoescape off %}{{ record.integrins }} {% endautoescape %}</a>
+                        {% else %}
+                        <a href="{% url 'interactions' protein=record.id %}">
+                            {% autoescape off %}{{ record.integrins }} {% endautoescape %}</a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if record.protein != "-" %}
+                            <a href="{% url 'interactions' protein=record.protein %}">
+                                {% if record.interaction_strength %}
+                                    <i class="fa-solid fa-check"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-x"></i>
+                                {% endif %}</a>
+                        {% else %}
+                            <a href="{% url 'interactions' protein=record.id %}">
+                                {% if record.interaction_strength %}
+                                    <i class="fa-solid fa-check"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-x"></i>
+                                {% endif %}</a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if record.protein != "-" %}
+                            <a href="{% url 'interactions' protein=record.protein %}">
+                                {% if record.bound_structure %}
+                                    <i class="fa-solid fa-check"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-x"></i>
+                                {% endif %}</a>
+                        {% else %}
+                            <a href="{% url 'interactions' protein=record.id %}">
+                                {% if record.bound_structure %}
+                                    <i class="fa-solid fa-check"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-x"></i>
+                                {% endif %}</a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if record.protein != "-" %}
+                            <a href="{% url 'interactions' protein=record.protein %}">
+                                {% if record.cell_based_assay %}
+                                    <i class="fa-solid fa-check"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-x"></i>
+                                {% endif %}</a>
+                        {% else %}
+                            <a href="{% url 'interactions' protein=record.id %}">
+                                {% if record.cell_based_assay %}
+                                    <i class="fa-solid fa-check"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-x"></i>
+                                {% endif %}</a>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if record.protein != "-" %}
+                            <a href="{% url 'interactions' protein=record.protein %}">
+                                {% if ecord.purified_assay %}
+                                    <i class="fa-solid fa-check"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-x"></i>
+                                {% endif %}</a>
+                        {% else %}
+                            <a href="{% url 'interactions' protein=record.id %}">
+                                {% if ecord.purified_assay %}
+                                    <i class="fa-solid fa-check"></i>
+                                {% else %}
+                                    <i class="fa-solid fa-x"></i>
+                                {% endif %}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

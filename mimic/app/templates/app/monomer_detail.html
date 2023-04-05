@@ -1,0 +1,73 @@
+{% extends "mimic/base.html" %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-lg'>
+        <h1>Integrin subunit: <strong>{{ monomer.display_name }}</strong></h1>
+    </div>
+</div>
+
+<div class='row'>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>Basic information</div>
+            <div class='card-body'>
+                <ul>
+                    <li><strong>Subunit name: </strong>{{ monomer.display_name }}</li>
+                    <li><strong>Uniprot accession: </strong><a target="_blank" href="{{ monomer.uniprot_link }}">{{ monomer.protein.uniprot }}</a></li>
+                    <li><strong>Ensembl gene ID: </strong><a target="_blank" href="{{ monomer.ensembl_link }}">{{ monomer.ensg }}</a></li>
+                    <li><strong>Alternative names: </strong>
+                        {% if monomer.protein.alternativename_set.all %}
+                            {{ monomer.protein.alternativename_set.all|join:", " }}
+                        {% else %}
+                            (none)
+                        {% endif %}
+                    </li>
+                    <li><strong>Tissue expression: </strong> {{ monomer.expression }}</li>
+                    {% if not monomer.alpha_interaction_domain is None %}
+                        <li><strong>Inserted interaction domain present: </strong> {{ monomer.alpha_interaction_domain|yesno }}</li>
+                    {% endif %}
+                    <li><strong>Present in the following dimeric receptors: </strong>
+                        <ul>
+                            {% for dimer in monomer.alpha.all %} 
+                                <li><a href="{% url 'dimer' dimer.lookup_name %}">
+                                        {{ dimer.display_name }}
+                                    </a></li>
+                            {% endfor %}
+                            {% for dimer in monomer.beta.all %} 
+                                <li><a href="{% url 'dimer' dimer.lookup_name %}">
+                                        {{ dimer.display_name }}
+                                    </a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>Domain architecture of {{ monomer.display_name }} (with UniProt numbering)</div>
+            <div class='card-body'> 
+                <ul>
+                    {% for m2s in monomer.monomertostructure_set.all %}
+                        <li>{{ m2s.structure.name }} ({{ m2s.start }} - {{ m2s.stop }})</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<p>&nbsp;</p>
+<div class='row'>
+    <div class='col-lg'>
+        <div class='card'>
+            <div class='card-header'>{{ monomer.display_name }} sequence</div>
+            <div class='card-body'> 
+                <p>{{ monomer.sequence }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

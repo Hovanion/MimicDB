@@ -1,0 +1,110 @@
+{% extends "mimic/base.html" %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-lg'>
+        <h1> Protein Interactor page: <strong>{{ protein.proteininteractor.name }}</strong></h1>
+    </div>
+</div>
+
+<div class='row'>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>
+                {{ protein.proteininteractor.name }} information
+            </div>
+            <div class='card-body'>
+                <ul>
+                    <li>
+                        <strong>Name: </strong>
+                        {{ protein.proteininteractor.name }}
+                    </li>
+                    <li>
+                        <strong>Uniprot: </strong>
+                        <a target="_blank" href="{{ protein.proteininteractor.protein.uniprot_link}}">
+                            {{ protein.proteininteractor.protein.uniprot }}
+                        </a>
+                    </li>
+                    <li>
+                        <strong>Function: </strong>
+                        {{ protein.proteininteractor.function }}
+                    </li>
+                    <li>
+                        <strong>Taxonomic Group: </strong>
+                        {{ protein.proteininteractor.taxonomic_group }}
+                    </li>
+                    <li>
+                        <strong>Binding site: </strong>
+                        {{ protein.proteininteractor.start }}
+                        - 
+                        {{ protein.proteininteractor.stop }}
+                    </li>
+                    <li>
+                        <strong>Site definition: </strong>
+                        {{ protein.proteininteractor.site_definition }}
+                    </li>
+                    <li>
+                        <strong>Motif: </strong>
+                        {{ protein.proteininteractor.motif }}
+                    </li>
+                    <li>
+                        <strong>PDBs: </strong>
+                        {% if protein.proteininteractor.pdb %}
+                            {% for pdb_chain, pdb in protein.proteininteractor.pdbs_for_links %}
+                                <a target="_blank"href="https://www.rcsb.org/structure/{{ pdb }}">
+                                    {{ pdb_chain }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            (none)
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>
+                {{ protein.proteininteractor.name }} interactions
+            </div>
+            <div class='card-body'>
+                <ul>
+                    {% if protein.proteininteractor.annotated %}
+
+                        {% for d2pi in protein.proteininteractor.dimertoproteininteractor_set.all %}
+                            <li>
+                                <strong>Integrin:</strong>
+                                <a href="{% url 'dimer' d2pi.dimer.lookup_name %}">
+                                    {{ d2pi.dimer.display_name }}
+                                </a>
+                            </li>
+                                <ul>
+                                    {% if not d2pi.interaction %}
+                                        <li><strong>Interaction:</strong>
+                                            confirmed non-binding
+                                        </li>
+                                    {% endif %}
+                                    <li><strong>Affinity / Binding strength:</strong>
+                                        {{ d2pi.affinity|default:"N/A" }}
+                                    </li>
+                                    <li><strong>Pubmed:</strong>
+                                        {% for pmid in d2pi.list_of_pmids %}
+                                            <a target="_blank" href="https://www.ncbi.nlm.nih.gov/pubmed/{{ pmid }}">{{ pmid }}</a><!--don't insert space
+                                        -->{% if not forloop.last %},{% endif %}
+
+                                        {% endfor %}
+                                    </li>
+                                </ul>
+                        {% endfor %}
+                    {% else %}
+                        <p><em>no interactions annotated (yet)</em><p>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

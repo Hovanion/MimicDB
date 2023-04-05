@@ -1,0 +1,28 @@
+{% extends "mimic/base.html" %}
+{% load django_tables2 %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-lg'>
+        <h1>Integrins</h1>
+    </div>
+</div>
+<div class='row'>
+    <div class='col-lg'>
+        <p>
+            The table lists all 24 known human dimeric integrins. Clicking on the
+            <strong>Integrin name</strong> displays information about the dimeric
+            receptors, clicking on <strong>α subunit</strong> or
+            <strong>β subunit</strong> names displays information about
+            specific protein components of the receptors.
+        </p>
+        <p>
+            The table is sortable by clicking on column headers.
+        </p>
+        {% render_table table %}
+    </div>
+</div>
+
+
+{% endblock content %}

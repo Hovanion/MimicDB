@@ -1,0 +1,140 @@
+{% extends "mimic/base.html" %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-lg'>
+        <h1>Integrin: <strong>{{ dimer.display_name }}</strong></h1>
+    </div>
+</div>
+
+<div class='row'>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>
+                Basic information
+            </div>
+            <div class='card-body'>
+                <ul>
+                    <li>
+
+                        <strong>α subunit: </strong>
+                        <a href="{% url 'alpha' dimer.alpha.name %}">
+                            {{ dimer.alpha.display_name }}
+                        </a>
+                    </li>
+                    <li>
+                        <strong>β subunit: </strong>
+                        <a href="{% url 'beta' dimer.beta.name %}">
+                            {{ dimer.beta.display_name }}
+                        </a>
+                    </li>
+                    <li>
+                        <strong>Tissue expression:</strong>
+                        {{ dimer.expression }}
+                    </li>
+                    <li>
+                        <strong>Drugs:</strong>
+                        {% if dimer.drug_set.all %}
+                            {% for drug in dimer.drug_set.all %}
+                                <a href="{% url 'drug' drug.name %}">
+                                    {{ drug.name }}</a><!--don't insert space
+                                -->{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        {% else %}
+                            (none)
+                        {% endif %}
+                    </li>
+                    {% if not dimer.proteininteractor_set.all %}
+                        <li>
+                            <strong>Extracellular ligands: </strong>(none)
+                        </li>
+                    {% else %}
+                        <li>
+                            <strong>Extracellular ligands: </strong>
+                        </li>
+                        <ul>
+                            {% for protein_interactor in dimer.proteininteractor_set.all %}
+                                <li>
+                                    <a href="{% url 'protein-interactor' protein_interactor.protein.uniprot %}">
+                                    {{ protein_interactor.name }}</a>
+                                    {% if protein_interactor.taxonomic_group == 'Human' %}
+                                        <em>native</em>
+                                    {% else %}
+                                    <em>non-native ({{ protein_interactor.taxonomic_group }})</em>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>
+                Structural information
+            </div>
+            <div class='card-body'>
+                {{ dimer.generate_dimer_diagram | safe }}
+                <p>
+                    The figure shows in color the domains and regions of the
+                    α (blue) and β (red) subunits that have structural
+                    information in the PDB. Hovering over domains or regions
+                    displays the corresponding PDB IDs.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<p>&nbsp;</p>
+<div class='row'>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>Domain architecture of {{ dimer.alpha.display_name }} (with UniProt numbering)</div>
+            <div class='card-body'>
+                <ul>
+                    {% for m2s in dimer.alpha.monomertostructure_set.all %}
+                        <li>{{ m2s.structure.name }} ({{ m2s.start }} - {{ m2s.stop }})</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>Domain architecture of {{ dimer.beta.display_name }} (with UniProt numbering)</div>
+            <div class='card-body'>
+                <ul>
+                    {% for m2s in dimer.beta.monomertostructure_set.all %}
+                        <li>{{ m2s.structure.name }} ({{ m2s.start }} - {{ m2s.stop }})</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+});
+$('[data-toggle="popover"]').popover({ trigger: "manual" , html: true, animation:false})
+    .on("mouseenter", function () {
+        var _this = this;
+        $(this).popover("show");
+        $(".popover").on("mouseleave", function () {
+            $(_this).popover('hide');
+        });
+    }).on("mouseleave", function () {
+        var _this = this;
+        setTimeout(function () {
+            if (!$(".popover:hover").length) {
+                $(_this).popover("hide");
+            }
+        }, 300);
+});
+</script>
+{% endblock content %}
+

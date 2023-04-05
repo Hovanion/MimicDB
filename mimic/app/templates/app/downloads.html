@@ -1,0 +1,47 @@
+{% extends "mimic/base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class='row'>
+        <div class='col-lg'>
+            <h1>Downloads</h1>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="well">
+            <div class="row p-4 text-justify">
+                The current version (1.0) of MimicDB contains {{ records.count }} interactions.
+            </div>
+            <div class="row p-4 text-justify">
+                The full interaction list is available for download in TSV (tab-separated version).
+
+            </div>
+            <hr class="mt-2 mb-3"/>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="row text-center align-middle">
+                    <div class=" col-sm-4 col-md-3 p-4">
+                        <h4 class="titleh4">Full interaction list of MimicDB</h4>
+                    </div>
+                    <div class=" col-sm-4 col-md-3 p-4">
+                        <a href={% static 'downloads/mimicdb_2022.tsv' %} class="btn
+                           btn-out btn-rounded btn-light" role="button" download><i
+                            class="bi bi-file-earmark-arrow-down"></i> TSV </a>
+                    </div>
+                    {#                    <div class=" col-sm-4 col-md-3 p-4">#}
+                    {#                        <label class="btn btn-light" for="mySubmit2"><i#}
+                    {#                                class="bi bi-file-earmark-arrow-down"></i> XML</label>#}
+                    {#                        <input id="mySubmit2" type="submit" value="xml" name="download" class="hidden"/>#}
+                    {#                    </div>#}
+                    {#                    <div class=" col-sm-4 col-md-3 p-4">#}
+                    {#                        <label class="btn btn-light" for="mySubmit3"><i#}
+                    {#                                class="bi bi-file-earmark-arrow-down"></i> JSON</label>#}
+                    {#                        <input id="mySubmit3" type="submit" value="json" name="download" class="hidden"/>#}
+                    {#                    </div>#}
+                </div>
+        </div>
+    </div>
+
+{% endblock content %}

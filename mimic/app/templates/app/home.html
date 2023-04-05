@@ -1,0 +1,116 @@
+{% extends "mimic/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class='row'>
+        <div class='col-lg'>
+            <h1>Welcome to <strong>MimicDB!</strong></h1>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='col-md'>
+            <div class='card'>
+                <div class='card-header'>
+                    MimicDB
+                </div>
+                <div class='card-body'>
+                    <p>
+                        MimicDB is the repository for information about the 24 human
+                        dimeric integrins. It contains all sequence-level, structural,
+                        and expression information currently known about integrins.
+                        MimicDB also holds information about known disintegrins, which
+                        are snake venom proteins, known to target certain types of
+                        integrins to inhibit cellular interactions (most notably blood
+                        clotting) of the prey. The database also lists all currently
+                        available drugs in clinical use that target integrins.
+                    </p>
+                    <p>
+                        MimicDB is the platform for the data collected in the course
+                        of the
+                        <a target="_blank" href="http://embo.org/funding-awards/fellowships/embo-europabio-fellowships">
+                            EMBO|EuropaBio fellowship
+                        </a>
+                        7544 for Balint Meszaros. It will also serve as a database for
+                        the dissemination of the data collected and results generated
+                        in the course of potential future research with MSCA/EMBL
+                        funding.
+                    </p>
+                    <p>
+                        The current version of MimicDB is for monitoring the
+                        progress of the ongoing project, and for evaluation purposes of
+                        grant proposals for potential future funding. It is not
+                        intended for public use in its current form.
+                    </p>
+                    <p>
+                        MimicDB is developed and maintained by
+                        <a target="_blank"
+                           href="https://www.embl.de/research/units/scb/gibson/members/index.php?s_personId=CP-60024812">Marc
+                            Gouw</a>
+                        (<a target="_blank" href="https://www.embl.de/research/units/scb/gibson/members/index.php">Gibson
+                        Team</a>, EMBL Heidelberg)
+                    </p>
+                </div>
+            </div>
+            &nbsp;
+            <div class='card'>
+                <div class='card-header'>
+                    At a glance
+                </div>
+                <div class='card-body'>
+                    <ul>
+                        <li>
+                            Browse all
+                            <a href="{% url 'integrins' %}">
+                                {{ dimers.count }} dimeric human integrin receptors</a>.
+                        </li>
+                        <li>
+                            See the
+                            <a href="{% url 'drugs' %}">
+                                {{ drugs.count }} integrin-targeting drugs
+                            </a> in clinical use.
+                        </li>
+                        <li>
+                            View the
+                            <a href="{% url 'pdbs' %}">
+                                {{ pdbs.count }} PBD structures
+                            </a>with structural information about integrins.
+                        </li>
+                        <li>
+                            Check the
+                            <a href="{% url 'protein-interactors' %}">
+                                {{ protein_interactors.count }} extracellular integrin-binding proteins</a>.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class='col-md'>
+            <div class='card'>
+                <div class='card-header'>
+                    Randomly selected integrin receptor dimer: {{ random_dimer.display_name }}
+                </div>
+                <div class='card-body'>
+                    <p>
+                        MimicDB contains
+                        {{ random_dimer_counts.structures }} structure(s),
+                        {{ random_dimer_counts.interactors }} interactor(s), and
+                        {{ random_dimer_counts.drugs }} drug(s)
+                        for the selected integrin.
+                        See the
+                        <a href="{% url 'dimer' random_dimer.lookup_name %}">
+                            {{ random_dimer.display_name }} entry
+                        </a> for more info.
+                    </p>
+                    <a href="{% url 'dimer' random_dimer.lookup_name %}">
+                        {#                        <img class="d-block mx-auto"#}
+                        {#                             src="{% static 'mimic/integrins/' %} {{ random_dimer.lookup_name }}.png"/>#}
+                        {{ random_dimer.generate_dimer_diagram | safe }}
+                    </a>
+                    <p>Randomly selected Integrin entry. Reload page for another one.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

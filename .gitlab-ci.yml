@@ -1,0 +1,55 @@
+image: ubuntu:bionic
+
+before_script:
+
+  # update package cache
+  - apt-get update
+
+  # install build-essential
+  - apt-get install -y build-essential
+
+  # install python3 requirements
+  - apt-get install -y python3-minimal
+  - apt-get install -y python3-dev
+  - apt-get install -y python3-venv
+    
+  # Install python3 cairo bindings and libffi 
+  - apt-get install -y python3-cairo
+  - apt-get install -y libffi-dev 
+
+  # setup and activate virtualenv
+  - python3 -m venv venv
+  - source venv/bin/activate
+  - pip install --upgrade pip
+
+  # install packages
+  - pip install -r requirements.txt
+  - pip install -r testing-requirements.txt
+
+  # export settings for django
+  - export PYTHONPATH=$PWD/mimic
+  - export DJANGO_SETTINGS_MODULE="mimic.settings"
+
+
+test:
+  stage: test
+
+  script:
+
+    # run tests
+    - django-admin test
+
+coverage:
+  stage: test
+  script:    
+
+  # Run test coverage
+    - coverage erase
+    - coverage run --omit='*manage.py','*/venv/*','*/.virtualenvs/*','*/tests/*','*/migrations/*' mimic/manage.py test
+    - coverage report
+    - coverage html -d cover
+            
+  # Set coverage files as artifact
+  artifacts:
+    paths:
+      - cover/ 

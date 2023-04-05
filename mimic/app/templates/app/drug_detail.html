@@ -1,0 +1,85 @@
+{% extends "mimic/base.html" %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-lg'>
+        <h1> Drug page: <strong>{{ drug.name }}</strong></h1>
+    </div>
+</div>
+
+<div class='row'>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>
+                {{ drug.name }} information
+            </div>
+            <div class='card-body'>
+                <ul>
+                    <li>
+                        <strong>Marketing name: </strong>
+                        {{ drug.marketing_name|default:"(none)" }}
+                    </li>
+                    <li>
+                        <strong>Status: </strong>
+                        {{ drug.status }}
+                    </li>
+                    <li>
+                        <strong>Type: </strong>
+                        {{ drug.drug_type }}
+                    </li>
+                    <li>
+                        <strong>Administration: </strong>
+                        {{ drug.administration }}
+                    </li>
+                    <li>
+                        <strong>Launch year: </strong>
+                        {{ drug.launch_year|default:"(none)" }}
+                    </li>
+                    <li>
+                        <strong>Targets: </strong>
+                        <ul>
+                            {% for dimer in drug.dimer.all %}
+                            <li>
+                                <a href="{% url 'dimer' dimer.lookup_name %}">
+                                    {{ dimer.display_name }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Notes: </strong>
+                        {{ drug.notes|default:"(none)" }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class='col-md'>
+        <div class='card'>
+            <div class='card-header'>{{ drug.name }} external links</div>
+            <div class='card-body'>
+                <ul>
+                    <li><strong>ATC: </strong>
+                        <a target="_blank" href="{{ drug.atc_link }} ">
+                            {{ drug.atc }}
+                        </a>
+                        ({{ drug.atc_class }})
+                    </li>
+                    <li><strong>Drugbank: </strong>
+                        {% if drug.drugbank %}
+                            <a target="_blank" href="{{ drug.drugbank_link }}">
+                                {{ drug.drugbank }}
+                            </a>
+                        {% else %}
+                            (none)
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

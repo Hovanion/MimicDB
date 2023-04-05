@@ -1,0 +1,25 @@
+{% extends "mimic/base.html" %}
+{% load django_tables2 %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-lg'>
+        <h1>Extracellular integrin ligands</h1>
+    </div>
+</div>
+<div class='row'>
+    <div class='col-lg'>
+        <p>
+            The table lists known extracellular proteins (ligands) known to
+            interact with human integrins. All annotated interactions are based on
+            experimental evidence, cited on the pages of individual ligands.
+        </p>
+        <p>
+            The table is sortable by clicking on column headers
+        </p>
+        {% render_table table %}
+    </div>
+</div>
+
+{% endblock content %}
