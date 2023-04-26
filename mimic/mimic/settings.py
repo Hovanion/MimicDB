@@ -26,7 +26,7 @@ SECRET_KEY = '5_++zjeb=etluz1jre@lcj_$-w5vk36beq1#nh$q5wok(!n^zj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["10.11.17.33", "localhost", "127.0.0.1", "10.11.4.213", "192.168.210.163", "mimicdb.embl.de"]
+ALLOWED_HOSTS = ["10.11.17.33", "localhost", "127.0.0.1", "10.11.4.213", "192.168.210.163", "mimicdb.embl.de", "mimicdb.org"]
 
 # Application definition
 
