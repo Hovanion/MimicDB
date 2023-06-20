@@ -51,7 +51,7 @@ class BrowserView(ListView):
     def get_queryset(self):
         data_rows = ProteinInteractor.objects.values().distinct()
         data = list()
-        print(len(data_rows))
+        #print(len(data_rows))
         hit = set()
         for row in data_rows:
             protein_data = Protein.objects.filter(id=row["protein_id"]).all().first()

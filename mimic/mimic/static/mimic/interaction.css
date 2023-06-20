@@ -1,0 +1,28 @@
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus, #jumpto :hover{
+    background-color: #00CC99;
+    border-color: #00CC99;
+}
+
+.btn-info {
+    background-color: #00CC99;
+    border-color: #00CC99;
+}
+
+.btn-info :hover {
+    background-color: #007a5b;
+    border-color: #007a5b;
+}
+
+.panel-heading {
+    padding: 30px 15px;
+}
+
+input, select{
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+select.form-control:not([size]):not([multiple]) {
+    height: inherit;
+}

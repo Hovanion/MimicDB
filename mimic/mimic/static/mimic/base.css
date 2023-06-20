@@ -240,3 +240,50 @@ th, tr, td {
     color: #5a5b5d;
 }
 
+/*------------ browsertable -------*/
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus, #jumpto :hover{
+    background-color: #003366;
+    border-color: #003366;
+    color:  #F0F6FB;
+
+}
+
+.btn-info {
+    background-color: #003366;
+    border-color: #003366;
+}
+
+.btn-info :hover {
+    background-color: #003366;
+    border-color: #003366;
+}
+
+.panel-heading {
+    padding: 30px 15px;
+}
+
+.pagination>li>a, .pagination>li>span, .pagination>li>i {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    line-height: 1.428571429;
+    text-decoration: none;
+    color: #428bca;
+    background-color: #fff;
+   /*border: 1px solid #ddd;*/
+    margin-left: -1px;
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
