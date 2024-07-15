@@ -133,7 +133,7 @@ class Dimer(models.Model):
     )
    
     expression = models.TextField(null=True)
-    
+
     function = models.TextField(null=True)
     
     
@@ -572,7 +572,7 @@ class ProteinInteractor(models.Model):
     def elm_link(self):
         """ Returns a link to the ECO page for thisProteinInteractor's experimental_method.
         """  # TODO improve comments
-        url = "http://elm.eu.org/instances/{}/"
+        url = "http://elm.eu.org/elms/{}/"
         return url.format(self.motif)
 
     def pubmed_link(self):
