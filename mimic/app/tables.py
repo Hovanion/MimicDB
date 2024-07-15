@@ -15,6 +15,7 @@ class DimerTable(tables.Table):
     #    args=[tables.utils.A('lookup_name')],
     #    order_by=tables.utils.A('lookup_name'),
     # )
+    
     display_name = tables.LinkColumn(
         'dimer',
         args=[tables.utils.A('lookup_name')],

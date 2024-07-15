@@ -133,6 +133,7 @@ class Dimer(models.Model):
     )
    
     expression = models.TextField(null=True)
+    
     function = models.TextField(null=True)
     
     

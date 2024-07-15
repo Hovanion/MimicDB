@@ -413,7 +413,7 @@ class DimerParser(object):
 
         - "Dimer_name": Dimer name, format: <alpha-name>/<beta-name> 
         - "Expression": Text description of HPA expression 
-        - "Notes": Any extra notes 
+        - "Function": Add function note
 
     The "Dimer_name" values should be the same as those used for `Monomer.name`
     """
