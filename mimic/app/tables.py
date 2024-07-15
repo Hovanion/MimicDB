@@ -38,7 +38,7 @@ class DimerTable(tables.Table):
     # )
     notes = tables.LinkColumn(
         'notes',
-         args=[tables.utils.A('function')],
+         args=[tables.utils.A('notes')],
     verbose_name='Function'
     )
     
