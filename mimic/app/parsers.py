@@ -444,8 +444,9 @@ class DimerParser(object):
         Dimer.objects.create(
             alpha=alpha,
             beta=beta,
+            
             expression=series['Expression'],
-            notes=series['Notes'],
+            function=series['Function']
         )
 
         self.messages.append(

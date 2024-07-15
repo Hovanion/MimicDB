@@ -113,7 +113,7 @@ class Dimer(models.Model):
                               Beta subunit
         expression (str, optional): A string with expression information from
                                     the Human Protein Atlas
-        notes (str, optional): Extra information stored as notes
+        function (str, optional): Extra information stored as notes
     """
 
     lookup_name = models.CharField(
@@ -131,8 +131,11 @@ class Dimer(models.Model):
         on_delete=models.CASCADE,
         related_name='beta'
     )
+   
     expression = models.TextField(null=True)
-    notes = models.TextField(null=True)
+    function = models.TextField(null=True)
+    
+    
 
     def display_name(self):
         """ Return a nicely formatted name as: <alpha.name>/<beta.name> (with

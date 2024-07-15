@@ -31,10 +31,14 @@ class DimerTable(tables.Table):
         args=[tables.utils.A('beta.name')],
         verbose_name='β subunit',
     )
+    expression= tables.TemplateColumn(
+        '{{record.expression}}">'
+        '{{record.expression}}</a>'
+    )
 
     class Meta:
         model = Dimer
-        fields = ('display_name', 'alpha', 'beta', 'expression')
+        fields = ('display_name', 'alpha', 'beta', 'function', 'expression')
         attrs = {'class': 'table table-hover'}
 
 
