@@ -36,10 +36,16 @@ class DimerTable(tables.Table):
     #     '{{record.expression}}">'
     #     '{{record.expression}}</a>'
     # )
+    notes = tables.LinkColumn(
+        'notes',
+         args=[tables.utils.A('function')],
+    verbose_name='Function'
+    )
+    
 
     class Meta:
         model = Dimer
-        fields = ('display_name', 'alpha', 'beta', 'function', 'expression')
+        fields = ('display_name', 'alpha', 'beta', 'notes', 'expression')
         attrs = {'class': 'table table-hover'}
 
 
