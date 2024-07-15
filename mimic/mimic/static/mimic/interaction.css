@@ -6,11 +6,13 @@
 .btn-info {
     background-color: #00CC99;
     border-color: #00CC99;
+    color: #212529;
 }
 
 .btn-info :hover {
     background-color: #007a5b;
     border-color: #007a5b;
+    color: #212529;
 }
 
 .panel-heading {
